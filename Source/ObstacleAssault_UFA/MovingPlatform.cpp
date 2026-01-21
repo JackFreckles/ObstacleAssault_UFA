@@ -16,8 +16,12 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Display, TEXT("Moving Platform is here yo"));
-	
+	int NumberOfApples = 100;
+	UE_LOG(LogTemp, Display, TEXT("Number of apples: %d"), NumberOfApples);
+
+	float MyFloatNumber = 69.0f;
+	UE_LOG(LogTemp, Warning, TEXT("Number of floating numbers: %f"), MyFloatNumber);
+
 }
 
 // Called every frame
