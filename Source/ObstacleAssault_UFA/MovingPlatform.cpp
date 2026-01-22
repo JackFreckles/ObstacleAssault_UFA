@@ -16,12 +16,6 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
-	int NumberOfApples = 100;
-	UE_LOG(LogTemp, Display, TEXT("Number of apples: %d"), NumberOfApples);
-
-	float MyFloatNumber = 69.0f;
-	UE_LOG(LogTemp, Warning, TEXT("Number of floating numbers: %f"), MyFloatNumber);
-
 }
 
 // Called every frame
@@ -29,5 +23,9 @@ void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Increases Actor X value by 1 every Tick(or frame)
+	FVector CurrentLocation = GetActorLocation();
+	CurrentLocation.X = CurrentLocation.X + (120 * DeltaTime);
+	SetActorLocation(CurrentLocation);
 }
 
