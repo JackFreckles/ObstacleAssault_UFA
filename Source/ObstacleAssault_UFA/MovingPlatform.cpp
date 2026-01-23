@@ -16,6 +16,8 @@ void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 
+	StartLocation = GetActorLocation();
+
 }
 
 // Called every frame
@@ -23,9 +25,36 @@ void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// Increases Actor X value by 1 every Tick(or frame)
-	FVector CurrentLocation = GetActorLocation();
-	CurrentLocation.X = CurrentLocation.X + (120 * DeltaTime);
-	SetActorLocation(CurrentLocation);
+	MovePlatform(DeltaTime);
+	RotatePlatform(DeltaTime);
 }
 
+void AMovingPlatform::MovePlatform(float DeltaTime)
+{
+	DistanceMoved = FVector::Dist(StartLocation, GetActorLocation()); // Simply measures the distance between two given identifiers
+
+	// If the platform has moved a specified distance, it will swap direction
+	if (DistanceMoved >= MaxDistance) 
+	{
+    	FVector MoveDirection = PlatformVelocity.GetSafeNormal();
+    	FVector NewStartLocation = StartLocation + MoveDirection * MaxDistance;
+
+    	SetActorLocation(NewStartLocation);
+    	StartLocation = NewStartLocation;
+    	
+		PlatformVelocity = -PlatformVelocity;
+	}
+	else
+	{
+		FVector CurrentLocation = GetActorLocation();
+		CurrentLocation = CurrentLocation + (PlatformVelocity * DeltaTime); //Multiplying PlatformVelocity by DeltaTime keeps the movement framerate independent so that it will move the same speed at different FPS
+		SetActorLocation(CurrentLocation);
+	}
+}
+
+void AMovingPlatform::RotatePlatform(float DeltaTime)
+{
+	// Rotates the platform
+	FRotator RotationToAdd = PlatformRotation * DeltaTime;
+	AddActorLocalRotation(RotationToAdd);
+}
